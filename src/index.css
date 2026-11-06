@@ -1,59 +1,31 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-canvas: #faf8ff;
-  --color-surface-tint: #e5d9f2;
-  --color-primary: #7956a8;
-  --color-secondary: #a68bc9;
-  --color-tertiary: #c8b6e2;
-  --color-plum-dark: #33204a;
-  --color-plum: #64438e;
-  --color-copy-muted: #655b70;
-  --color-line: #e5d9f2;
-  --font-sans: 'DM Sans', sans-serif;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --radius-card: 1.25rem;
-  --shadow-card: 0 20px 64px rgb(51 32 74 / 9%);
-}
-
 :root {
-  font-family: var(--font-sans);
-  color: var(--color-plum-dark);
-  background: var(--color-canvas);
+  font-family: 'DM Sans', sans-serif;
+  color: #33204a;
+  background: #faf8ff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --cream: var(--color-canvas);
-  --beige: var(--color-surface-tint);
-  --primary: var(--color-primary);
-  --secondary: var(--color-secondary);
-  --tertiary: var(--color-tertiary);
-  --plum-deep: var(--color-plum-dark);
-  --plum-mid: var(--color-plum);
-  --ink: var(--color-plum-dark);
-  --muted: var(--color-copy-muted);
-  --line: var(--color-line);
+  --cream: #faf8ff;
+  --beige: #e5d9f2;
+  --primary: #7956a8;
+  --secondary: #a68bc9;
+  --tertiary: #c8b6e2;
+  --plum-deep: #33204a;
+  --plum-mid: #64438e;
+  --ink: #33204a;
+  --muted: #655b70;
+  --line: #e5d9f2;
   --gradient-brand: linear-gradient(135deg, #7956a8 0%, #a68bc9 52%, #c8b6e2 100%);
   --gradient-soft: linear-gradient(135deg, #faf8ff 0%, #e5d9f2 52%, #c8b6e2 100%);
   --gradient-luxury: linear-gradient(135deg, #33204a 0%, #64438e 52%, #7956a8 100%);
-  --display: var(--font-display);
-
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --shadow-card: 0 20px 64px rgb(51 32 74 / 9%);
   font-optical-sizing: auto;
   font-weight: 400;
-}
-
-@utility bg-brand-gradient {
-  background-image: var(--gradient-brand);
-}
-
-@utility bg-soft-gradient {
-  background-image: var(--gradient-soft);
-}
-
-@utility bg-luxury-gradient {
-  background-image: var(--gradient-luxury);
 }
 
 * {
