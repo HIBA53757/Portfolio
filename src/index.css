@@ -1,0 +1,52 @@
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color: #33204a;
+  background: #faf8ff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --cream: #faf8ff;
+  --beige: #e5d9f2;
+  --primary: #7956a8;
+  --secondary: #a68bc9;
+  --tertiary: #c8b6e2;
+  --plum-deep: #33204a;
+  --plum-mid: #64438e;
+  --ink: #33204a;
+  --muted: #655b70;
+  --line: #e5d9f2;
+  --gradient-brand: linear-gradient(135deg, #7956a8 0%, #a68bc9 52%, #c8b6e2 100%);
+  --gradient-soft: linear-gradient(135deg, #faf8ff 0%, #e5d9f2 52%, #c8b6e2 100%);
+  --gradient-luxury: linear-gradient(135deg, #33204a 0%, #64438e 52%, #7956a8 100%);
+  --display: 'Cormorant Garamond', Georgia, serif;
+
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  color: var(--cream);
+  background: var(--primary);
+}
