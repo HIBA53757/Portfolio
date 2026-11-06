@@ -12,6 +12,41 @@ const sections = [
   { id: 'contact', label: 'Contact' },
 ]
 
+const skillGroups = [
+  {
+    title: 'Langages',
+    items: ['PHP', 'JavaScript', 'SQL', 'HTML5', 'CSS3'],
+  },
+  {
+    title: 'Frameworks & bibliothèques',
+    items: ['Laravel', 'React', 'Express.js', 'EJS', 'jQuery'],
+  },
+  {
+    title: 'UI/UX & styling',
+    items: ['Tailwind CSS', 'Bootstrap', 'Figma', 'Responsive design'],
+  },
+  {
+    title: 'Bases de données',
+    items: ['MySQL', 'MongoDB', 'Mongoose'],
+  },
+  {
+    title: 'Développement web',
+    items: ['API REST', 'MVC', 'AJAX', 'WebSockets', 'Laravel Reverb', 'Laravel Sanctum'],
+  },
+  {
+    title: 'Outils & environnement',
+    items: ['Git', 'GitHub', 'VS Code', 'Jira', 'Scrum / Agile', 'Node.js', 'npm', 'Docker'],
+  },
+]
+
+const transferableSkills = [
+  'Travail en équipe',
+  'Organisation & gestion du temps',
+  'Autonomie',
+  'Apprentissage rapide',
+  'Adaptabilité',
+]
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuToggleRef = useRef(null)
@@ -166,7 +201,54 @@ function App() {
           </aside>
         </motion.section>
 
-        {sections.filter((section) => section.id !== 'about').map((section) => (
+        <section className="content-section skills-section" id="skills">
+          <div className="skills-heading">
+            <div>
+              <p className="eyebrow">Compétences</p>
+              <h2>
+                Mon terrain de jeu <span className="skills-title-accent">technique</span>
+              </h2>
+            </div>
+            <p className="section-note">
+              Les technologies et méthodes que j’utilise pendant ma formation et dans mes projets.
+            </p>
+          </div>
+
+          <div className="skill-grid">
+            {skillGroups.map((group, index) => (
+              <motion.article
+                className="skill-card"
+                key={group.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.36, delay: index * 0.06, ease: 'easeOut' }}
+              >
+                <div className="skill-card-top">
+                  <span className="skill-index">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="skill-card-rule" aria-hidden="true" />
+                </div>
+                <h3>{group.title}</h3>
+                <ul className="skill-tags">
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </motion.article>
+            ))}
+          </div>
+
+          <div className="transferable-section">
+            <h3>Compétences transversales</h3>
+            <ul className="transferable-list">
+              {transferableSkills.map((skill) => (
+                <li key={skill}>{skill}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {sections.filter((section) => !['about', 'skills'].includes(section.id)).map((section) => (
           <section className="content-section" id={section.id} key={section.id}>
             <p className="eyebrow">{section.label}</p>
             <h2>{section.label}</h2>
