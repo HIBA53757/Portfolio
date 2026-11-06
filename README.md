@@ -7,8 +7,8 @@ A responsive portfolio built with React, Vite, and JavaScript. Its visual direct
 The portfolio is being built in small, reviewable commits:
 
 1. **Project structure** — establish the application shell, section anchors, and page metadata.
-2. **Design system and tools** — configure Tailwind CSS, brand colors, typography, icons, and Motion.
-3. **Navigation** — refine desktop navigation and add a mobile-friendly menu.
+2. **Design system** — configure Tailwind CSS and reusable gradient, color, and typography tokens.
+3. **Navigation and motion** — refine desktop navigation, add a mobile-friendly menu, and use Lucide icons and Motion for interaction.
 4. **Introduction** — write and style the hero and profile using the CV.
 5. **Skills** — present the technical and transferable skills from the CV.
 6. **Experience** — add the Highness internship without inventing results.
