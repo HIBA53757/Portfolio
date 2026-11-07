@@ -248,7 +248,124 @@ function App() {
           </div>
         </section>
 
-        {sections.filter((section) => !['about', 'skills'].includes(section.id)).map((section) => (
+        <section className="content-section experience-section" id="experience">
+          <div className="experience-heading">
+            <div>
+              <p className="eyebrow">Parcours professionnel</p>
+              <h2>Expérience</h2>
+            </div>
+            <p className="section-note">
+              Une première expérience au sein d’une équipe de développement web.
+            </p>
+          </div>
+
+          <div className="experience-entry">
+            <div className="experience-meta">
+              <span className="experience-period">05.2026 — 08.2026</span>
+              <span className="experience-location">Kénitra, Maroc</span>
+            </div>
+
+            <motion.article
+              className="experience-card"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -6 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            >
+              <div className="experience-card-top">
+                <a
+                  className="highness-wordmark"
+                  href="https://highness.co/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Visiter le site officiel de Highness"
+                >
+                  highness<span>.</span>
+                </a>
+                <span className="experience-type">Stage</span>
+                <span className="experience-card-period">Mai — août 2026</span>
+              </div>
+              <h3>Stagiaire en développement web</h3>
+              <p className="experience-company">Highness · Agence digitale à Kénitra</p>
+              <p className="experience-summary">
+                Participation au développement d’une application SaaS destinée aux entreprises,
+                avec un système de live chat pour mettre en relation les visiteurs et les agents.
+              </p>
+
+              <div className="experience-showcase">
+                <div className="experience-highlights">
+                  <article className="experience-highlight">
+                    <span className="highlight-number">01</span>
+                    <div>
+                      <h4>Développement full stack</h4>
+                      <p>Contribution au frontend, au backend, aux interfaces et à la gestion des données.</p>
+                    </div>
+                  </article>
+                  <article className="experience-highlight">
+                    <span className="highlight-number">02</span>
+                    <div>
+                      <h4>Chat en temps réel</h4>
+                      <p>Mise en place de la communication avec WebSockets et Laravel Reverb.</p>
+                    </div>
+                  </article>
+                  <article className="experience-highlight">
+                    <span className="highlight-number">03</span>
+                    <div>
+                      <h4>Travail d’équipe</h4>
+                      <p>Approche Agile et suivi du code source avec Git.</p>
+                    </div>
+                  </article>
+                </div>
+
+                <div
+                  className="realtime-visual"
+                  role="img"
+                  aria-label="Illustration conceptuelle d’un échange en temps réel entre un visiteur et un agent"
+                >
+                  <p className="visual-kicker">Illustration conceptuelle · Live chat</p>
+                  <div className="chat-participants">
+                    <div className="chat-actor">
+                      <span className="chat-avatar visitor-avatar">V</span>
+                      <div>
+                        <span className="chat-actor-label">Visiteur</span>
+                        <span className="chat-bubble visitor-bubble" />
+                      </div>
+                    </div>
+                    <div className="chat-connection" aria-hidden="true">
+                      <span />
+                      <span />
+                      <span />
+                    </div>
+                    <div className="chat-actor agent-actor">
+                      <span className="chat-avatar agent-avatar">A</span>
+                      <div>
+                        <span className="chat-actor-label">Agent</span>
+                        <span className="chat-bubble agent-bubble" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="visual-tech-label">
+                    <span className="live-dot" /> WebSockets · Laravel Reverb
+                  </div>
+                </div>
+              </div>
+
+              <div className="experience-divider" />
+              <p className="technology-label">Technologies</p>
+              <ul className="technology-list" aria-label="Technologies utilisées">
+                {[
+                  'PHP', 'Laravel', 'Blade', 'JavaScript', 'jQuery', 'AJAX',
+                  'WebSockets', 'Laravel Reverb', 'HTML', 'CSS', 'API', 'Git',
+                ].map((technology) => (
+                  <li key={technology}>{technology}</li>
+                ))}
+              </ul>
+            </motion.article>
+          </div>
+        </section>
+
+        {sections.filter((section) => !['about', 'skills', 'experience'].includes(section.id)).map((section) => (
           <section className="content-section" id={section.id} key={section.id}>
             <p className="eyebrow">{section.label}</p>
             <h2>{section.label}</h2>
