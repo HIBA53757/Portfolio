@@ -47,6 +47,76 @@ const transferableSkills = [
   'Adaptabilité',
 ]
 
+const projects = [
+  {
+    id: 'job-match',
+    number: '01',
+    category: 'Plateforme de recrutement',
+    title: 'Job Match',
+    description:
+      'Plateforme de recrutement avec espaces séparés pour les apprenants et les administrateurs. Les apprenants consultent les offres et filtrent les opportunités en temps réel ; les administrateurs gèrent les annonces, les entreprises et suivent les statistiques depuis leur tableau de bord.',
+    technologies: ['PHP', 'MySQL', 'JavaScript', 'PDO', 'Twig', 'Composer'],
+    concepts: [
+      'Architecture MVC personnalisée',
+      'Recherche AJAX & filtres combinables',
+      'Rôles et sessions séparés',
+      'Archivage et restauration (soft delete)',
+      'Sécurité : CSRF, validation & protection XSS',
+      'Dashboard avec statistiques dynamiques',
+    ],
+    visual: 'job-match',
+    image: 'https://images.unsplash.com/photo-1758520144437-f068ecaf0d83?auto=format&fit=crop&w=1400&q=85',
+    visualLabel: 'Illustration des profils candidats et entreprises reliés par Job Match',
+  },
+  {
+    id: 'lms-backend',
+    number: '02',
+    category: 'API backend · Projet en squad',
+    title: 'LMS Backend',
+    description:
+      'Projet d’API LMS mené en squad sur trois briefs, avec un périmètre allant du catalogue à l’authentification, la progression, les quiz, les notifications et les statistiques.',
+    technologies: ['Node.js', 'Express', 'MongoDB', 'Mongoose', 'Docker'],
+    concepts: ['API REST', 'Rôles & permissions', 'Progression séquentielle', 'Quiz & score backend', 'Jobs & statistiques'],
+    visual: 'lms',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=85',
+    visualLabel: 'Illustration conceptuelle de l’API LMS et de sa base MongoDB',
+  },
+  {
+    id: 'ecommerce-laravel',
+    number: '03',
+    category: 'Application monolithique · Projet collectif',
+    title: 'E-commerce Laravel',
+    description:
+      'Application e-commerce Laravel couvrant le catalogue, les stocks, le panier, le cycle de commande et les notifications par e-mail.',
+    technologies: ['PHP', 'Laravel', 'Eloquent', 'Spatie Permission'],
+    concepts: ['Rôles & policies', 'Stocks & commandes', 'Avis & modération', 'Notifications e-mail'],
+    visual: 'shop',
+    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=85',
+    visualLabel: 'Illustration conceptuelle du catalogue et du parcours de commande e-commerce',
+    briefBonuses: ['Paiement en ligne (Stripe/Mollie)', 'Temps réel (Reverb/Pusher)'],
+  },
+  {
+    id: 'easycoloc',
+    number: '04',
+    category: 'Plateforme de gestion de colocation',
+    title: 'EasyColoc',
+    description:
+      'Application de gestion de colocation qui centralise les membres, les invitations et les dépenses partagées. Elle calcule les soldes, simplifie les remboursements et permet de suivre la réputation financière des membres.',
+    technologies: ['PHP', 'Laravel', 'Eloquent', 'MySQL / PostgreSQL'],
+    concepts: [
+      'Architecture monolithique MVC & relations Eloquent',
+      'Rôles Owner, Member & administrateur global',
+      'Invitations par email avec token',
+      'Balances et remboursements simplifiés',
+      'Dépenses par catégorie & filtre mensuel',
+      'Réputation financière & modération des utilisateurs',
+    ],
+    visual: 'easycoloc',
+    image: 'https://images.unsplash.com/photo-1602443394222-300ea8fca02e?auto=format&fit=crop&w=1400&q=85',
+    visualLabel: 'Illustration conceptuelle des dépenses partagées et des remboursements EasyColoc',
+  },
+]
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuToggleRef = useRef(null)
@@ -365,7 +435,129 @@ function App() {
           </div>
         </section>
 
-        {sections.filter((section) => !['about', 'skills', 'experience'].includes(section.id)).map((section) => (
+        <section className="content-section projects-section" id="projects">
+          <div className="projects-heading">
+            <div>
+              <p className="eyebrow">Projets sélectionnés</p>
+              <h2>Des projets concrets</h2>
+            </div>
+            <p className="section-note">
+              Des applications développées pendant ma formation et mes projets pratiques.
+            </p>
+          </div>
+
+          <div className="project-list">
+            {projects.map((project, index) => (
+              <motion.article
+                className={`project-row project-row--${index % 2 === 0 ? 'visual-left' : 'visual-right'}`}
+                key={project.id}
+                aria-labelledby={`${project.id}-title`}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.36, delay: index * 0.07, ease: 'easeOut' }}
+              >
+                <div
+                  className={`project-visual project-visual--${project.visual}`}
+                  role="img"
+                  aria-label={project.visualLabel}
+                >
+                  <img className="project-background-image" src={project.image} alt="" aria-hidden="true" loading="lazy" />
+                  <span className="project-visual-label">Illustration conceptuelle</span>
+                  <span className="project-visual-number">{project.number}</span>
+                  {project.visual === 'job-match' && (
+                    <div className="job-match-preview" aria-hidden="true">
+                      <span className="preview-label">Connexion professionnelle</span>
+                      <div className="match-people">
+                        <span className="match-person">Candidat</span>
+                        <span className="match-symbol">↔</span>
+                        <span className="match-person match-person--company">Entreprise</span>
+                      </div>
+                      <span className="preview-footer">Profils · Offres · Recherche</span>
+                    </div>
+                  )}
+                  {project.visual === 'lms' && (
+                    <div className="lms-preview" aria-hidden="true">
+                      <span className="lms-code-mark">&lt;/&gt;</span>
+                      <span className="lms-name">API LMS</span>
+                      <div className="lms-flow">
+                        <span>Express</span>
+                        <span className="lms-flow-arrow">→</span>
+                        <span>MongoDB</span>
+                      </div>
+                      <span className="lms-caption">Node.js · Mongoose</span>
+                    </div>
+                  )}
+                  {project.visual === 'shop' && (
+                    <div className="shop-preview" aria-hidden="true">
+                      <div className="shop-preview-heading">
+                        <span>BOUTIQUE · CATALOGUE</span>
+                        <span>Panier</span>
+                      </div>
+                      <div className="shop-preview-body">
+                        <div className="shop-product-shape">
+                          <span>Produit</span>
+                        </div>
+                        <div className="shop-order-flow">
+                          <span>Stock disponible</span>
+                          <strong>Panier <span>→</span> Commande</strong>
+                          <span>Cycle de commande</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {project.visual === 'easycoloc' && (
+                    <div className="easycoloc-preview" aria-hidden="true">
+                      <div className="easycoloc-preview-heading">
+                        <span>EASYCOLOC · DÉPENSES PARTAGÉES</span>
+                        <span>Colocation active</span>
+                      </div>
+                      <div className="easycoloc-preview-body">
+                        <div className="easycoloc-balance">
+                          <span>Solde du mois</span>
+                          <strong>+ 240 DH</strong>
+                          <span>3 membres · 8 dépenses</span>
+                        </div>
+                        <div className="easycoloc-settlement">
+                          <span>Remboursements simplifiés</span>
+                          <strong>Salma <b>→</b> Lina</strong>
+                          <span className="easycoloc-settlement-amount">80 DH · À régler</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="project-copy">
+                  <p className="project-index">{project.number} <span>/ {String(projects.length).padStart(2, '0')}</span></p>
+                  <p className="project-category">{project.category}</p>
+                  <h3 id={`${project.id}-title`}>{project.title}</h3>
+                  <p className="project-description">{project.description}</p>
+                  <ul className="project-technologies" aria-label={`Technologies de ${project.title}`}>
+                    {project.technologies.map((technology) => (
+                      <li key={technology}>{technology}</li>
+                    ))}
+                  </ul>
+                  <div className="project-concepts">
+                    <p className="project-detail-label">Concepts clés</p>
+                    <ul className="project-concept-list">
+                      {project.concepts.map((concept) => (
+                        <li key={concept}>{concept}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  {project.briefBonuses && (
+                    <p className="project-brief-bonuses">
+                      Options bonus du brief : {project.briefBonuses.join(' · ')}
+                    </p>
+                  )}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </section>
+
+        {sections.filter((section) => !['about', 'skills', 'experience', 'projects'].includes(section.id)).map((section) => (
           <section className="content-section" id={section.id} key={section.id}>
             <p className="eyebrow">{section.label}</p>
             <h2>{section.label}</h2>
