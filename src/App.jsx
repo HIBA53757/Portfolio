@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Menu, Phone, Send, Sparkles, X } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Menu, Moon, Phone, Send, Sparkles, Sun, X } from 'lucide-react'
 import './App.css'
 
 const sections = [
@@ -171,6 +171,7 @@ const projects = [
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [theme, setTheme] = useState(() => window.localStorage.getItem('portfolio-theme') || 'light')
   const [contactStatus, setContactStatus] = useState('')
   const menuToggleRef = useRef(null)
   const {
@@ -181,6 +182,11 @@ function App() {
     mode: 'onBlur',
     defaultValues: { name: '', email: '', subject: '', message: '' },
   })
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    window.localStorage.setItem('portfolio-theme', theme)
+  }, [theme])
 
   useEffect(() => {
     if (!isMenuOpen) return undefined
@@ -234,6 +240,16 @@ function App() {
             </a>
           ))}
         </nav>
+
+        <button
+          className="theme-toggle"
+          type="button"
+          onClick={() => setTheme((currentTheme) => currentTheme === 'light' ? 'dark' : 'light')}
+          aria-label={theme === 'light' ? 'Activer le mode sombre' : 'Activer le mode clair'}
+          title={theme === 'light' ? 'Mode sombre' : 'Mode clair'}
+        >
+          {theme === 'light' ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
+        </button>
 
         <button
           ref={menuToggleRef}
