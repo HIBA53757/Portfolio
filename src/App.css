@@ -208,6 +208,12 @@
   border-radius: 1.4rem;
   background: color-mix(in srgb, white 70%, var(--cream));
   box-shadow: var(--shadow-card);
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.profile-card:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 1rem 2.5rem rgb(51 32 74 / 15%);
 }
 
 .profile-card::before {
@@ -351,27 +357,77 @@
   margin-bottom: 0.5rem;
 }
 
-.skill-grid {
+.skill-tree {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) 4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem 0;
+}
+
+.skill-tree::before {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 50%;
+  width: 4px;
+  border-radius: 4px;
+  background-image: var(--gradient-brand);
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top;
+  animation: treeGrow 1.1s ease-out forwards;
+  content: '';
 }
 
 .skill-card {
   position: relative;
   min-width: 0;
+  overflow: visible;
   padding: clamp(1.15rem, 2.3vw, 1.65rem);
   border: 1px solid color-mix(in srgb, var(--primary) 14%, white);
-  border-radius: 1.1rem;
+  border-radius: 2.4rem 0.55rem 2.4rem 0.55rem;
   background-image: var(--gradient-soft);
   background-size: 165% 165%;
   background-position: left top;
   box-shadow: 0 0.7rem 2rem rgb(51 32 74 / 5%);
   transition:
-    transform 220ms ease,
     box-shadow 220ms ease,
     border-color 220ms ease,
+    border-radius 300ms ease,
     background-position 350ms ease;
+}
+
+.skill-card::before {
+  position: absolute;
+  z-index: 0;
+  top: 1.1rem;
+  right: 2.1rem;
+  bottom: 1.1rem;
+  width: 2px;
+  border-radius: 2px;
+  background-image: linear-gradient(180deg, transparent, rgb(121 86 168 / 20%), transparent);
+  transform: rotate(24deg);
+  content: '';
+  pointer-events: none;
+}
+
+.skill-card::after {
+  position: absolute;
+  top: 1.15rem;
+  right: 1.25rem;
+  width: 0.75rem;
+  height: 1.25rem;
+  border-radius: 100% 0 100% 0;
+  background-image: var(--gradient-brand);
+  transform: rotate(38deg);
+  transform-origin: bottom left;
+  animation: skillLeafSway 2.8s ease-in-out infinite alternate;
+  content: '';
+}
+
+.skill-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .skill-card:nth-child(3n + 2) {
@@ -382,11 +438,104 @@
   background-position: right bottom;
 }
 
+.skill-card:nth-child(odd) {
+  grid-column: 1;
+  text-align: right;
+}
+
+.skill-card:nth-child(even) {
+  grid-column: 3;
+  border-radius: 0.55rem 2.4rem 0.55rem 2.4rem;
+  background-position: right top;
+  text-align: left;
+}
+
+.skill-card:nth-child(odd) .skill-card-top,
+.skill-card:nth-child(odd) .skill-tags {
+  justify-content: flex-end;
+}
+
+.skill-card:nth-child(odd)::before {
+  right: auto;
+  left: 2.1rem;
+  transform: rotate(-24deg);
+}
+
+.skill-card:nth-child(odd)::after {
+  right: auto;
+  left: 1.25rem;
+  transform: rotate(-38deg);
+  transform-origin: bottom right;
+  animation-name: skillLeafSwayLeft;
+}
+
 .skill-card:hover {
-  transform: translateY(-6px);
   border-color: var(--secondary);
+  border-radius: 0.55rem 2.4rem 0.55rem 2.4rem;
   background-position: right bottom;
   box-shadow: 0 1rem 2.4rem rgb(51 32 74 / 14%);
+}
+
+.skill-card:nth-child(even):hover {
+  border-radius: 2.4rem 0.55rem 2.4rem 0.55rem;
+}
+
+.skill-card:hover::after {
+  animation-duration: 0.8s;
+}
+
+.skill-branch {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 100%;
+  width: 2rem;
+  height: 2px;
+  background-image: var(--gradient-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: branchGrow 550ms ease-out forwards;
+}
+
+.skill-branch::after {
+  position: absolute;
+  top: 50%;
+  right: -0.27rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  background-image: var(--gradient-luxury);
+  box-shadow: 0 0 0 2px rgb(166 139 201 / 25%);
+  transform: translateY(-50%);
+  content: '';
+}
+
+.skill-card:nth-child(even) .skill-branch {
+  right: 100%;
+  left: auto;
+  transform-origin: right;
+}
+
+.skill-card:nth-child(even) .skill-branch::after {
+  right: auto;
+  left: -0.27rem;
+}
+
+.skill-card:nth-child(2) .skill-branch { animation-delay: 100ms; }
+.skill-card:nth-child(3) .skill-branch { animation-delay: 200ms; }
+.skill-card:nth-child(4) .skill-branch { animation-delay: 300ms; }
+.skill-card:nth-child(5) .skill-branch { animation-delay: 400ms; }
+.skill-card:nth-child(6) .skill-branch { animation-delay: 500ms; }
+
+@keyframes skillLeafSway {
+  from { transform: rotate(38deg); }
+  to { transform: rotate(52deg); }
+}
+
+@keyframes skillLeafSwayLeft {
+  from { transform: rotate(-38deg); }
+  to { transform: rotate(-52deg); }
 }
 
 .skill-card-top {
@@ -693,7 +842,6 @@
 }
 
 .experience-highlight:hover {
-  transform: translateX(3px);
   border-color: color-mix(in srgb, var(--primary) 18%, transparent);
   background: color-mix(in srgb, white 65%, var(--cream));
 }
@@ -922,6 +1070,279 @@
 
 .project-list {
   display: grid;
+}
+
+.education-section {
+  min-height: auto;
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+}
+
+.education-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 0.85fr);
+  align-items: start;
+  gap: clamp(2rem, 6vw, 5rem);
+}
+
+.education-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem 0;
+}
+
+.education-list::before {
+  position: absolute;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  left: 50%;
+  width: 4px;
+  border-radius: 4px;
+  background-image: var(--gradient-brand);
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top;
+  animation: treeGrow 1.1s ease-out forwards;
+  content: '';
+}
+
+.education-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-block: 0.5rem;
+}
+
+.education-item:nth-child(odd) {
+  grid-column: 1;
+  text-align: right;
+}
+
+.education-item:nth-child(even) {
+  grid-column: 3;
+  text-align: left;
+}
+
+.education-item::before {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 3px solid var(--cream);
+  border-radius: 50%;
+  background-image: var(--gradient-luxury);
+  box-shadow: 0 0 0 3px rgb(166 139 201 / 24%);
+  transform: translateY(-50%);
+  content: '';
+}
+
+.education-item::after {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 100%;
+  width: 2rem;
+  height: 2px;
+  background-image: var(--gradient-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: branchGrow 500ms ease-out forwards;
+  content: '';
+}
+
+.education-item:nth-child(odd)::before {
+  left: calc(100% + 1.675rem);
+}
+
+.education-item:nth-child(even)::before {
+  left: -2.325rem;
+}
+
+.education-item:nth-child(even)::after {
+  right: 100%;
+  left: auto;
+  transform-origin: right;
+}
+
+.education-item:nth-child(2)::after {
+  animation-delay: 180ms;
+}
+
+.education-item:nth-child(3)::after {
+  animation-delay: 360ms;
+}
+
+.education-item:nth-child(4)::after {
+  animation-delay: 540ms;
+}
+
+.education-period {
+  position: relative;
+  z-index: 1;
+  width: max-content;
+  margin: 0;
+  padding-inline: 0.35rem;
+  background-color: var(--cream);
+  color: var(--plum-deep);
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.education-item:nth-child(odd) .education-period {
+  align-self: flex-end;
+}
+
+.education-details h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.2;
+  background-image: var(--gradient-luxury);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.education-details {
+  position: relative;
+  z-index: 1;
+  min-height: 6rem;
+  padding: 1rem 1.8rem 1rem 1rem;
+  border: 1px solid rgb(121 86 168 / 18%);
+  border-radius: 1.4rem 0.35rem 1.4rem 0.35rem;
+  background-image: var(--gradient-soft);
+  box-shadow: 0 0.55rem 1.4rem rgb(51 32 74 / 9%);
+  transition: box-shadow 220ms ease, border-radius 220ms ease;
+}
+
+.education-item:nth-child(odd) .education-details {
+  padding-right: 1rem;
+  padding-left: 1.8rem;
+  border-radius: 0.35rem 1.4rem 0.35rem 1.4rem;
+}
+
+.education-item:nth-child(odd) .education-title-row {
+  justify-content: flex-end;
+}
+
+.education-details:hover {
+  border-radius: 0.35rem 1.4rem 0.35rem 1.4rem;
+  box-shadow: 0 0.9rem 2rem rgb(51 32 74 / 16%);
+}
+
+.education-details::after {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.75rem;
+  width: 0.75rem;
+  height: 1.15rem;
+  border-radius: 100% 0 100% 0;
+  background-image: var(--gradient-brand);
+  transform: rotate(40deg);
+  transform-origin: bottom left;
+  animation: leafSway 2.8s ease-in-out infinite alternate;
+  content: '';
+}
+
+.education-item:nth-child(odd) .education-details::after {
+  right: auto;
+  left: 0.8rem;
+  transform: rotate(-40deg);
+  transform-origin: bottom right;
+  --leaf-start: -40deg;
+  --leaf-end: -55deg;
+}
+
+@keyframes treeGrow {
+  to { transform: translateX(-50%) scaleY(1); }
+}
+
+@keyframes branchGrow {
+  to { transform: scaleX(1); }
+}
+
+@keyframes leafSway {
+  from { transform: rotate(var(--leaf-start, 40deg)); }
+  to { transform: rotate(var(--leaf-end, 55deg)); }
+}
+
+.education-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.education-status {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  color: var(--cream);
+  background-image: var(--gradient-luxury);
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.education-institution {
+  margin: 0.35rem 0 0;
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.education-location {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.language-panel {
+  padding: clamp(1.3rem, 3vw, 2rem);
+  border: 1px solid rgb(121 86 168 / 18%);
+  border-radius: 1.3rem;
+  background-image: var(--gradient-soft);
+  box-shadow: var(--shadow-card);
+}
+
+.language-panel h3 {
+  margin: 0.25rem 0 1.3rem;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.8rem;
+}
+
+.language-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.language-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgb(121 86 168 / 12%);
+  border-radius: 0.75rem;
+  color: var(--plum-deep);
+  background: rgb(250 248 255 / 76%);
+  font-size: 0.8rem;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.language-item:hover {
+  box-shadow: 0 0.5rem 1.2rem rgb(51 32 74 / 12%);
+}
+
+.language-level {
+  color: var(--plum-mid);
+  font-size: 0.68rem;
+  font-weight: 600;
 }
 
 .project-row {
@@ -1468,10 +1889,6 @@
 }
 
 @media (max-width: 900px) {
-  .skill-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .project-row {
     gap: 2rem;
   }
@@ -1488,6 +1905,10 @@
   .experience-entry {
     grid-template-columns: 8rem minmax(0, 1fr);
     gap: 1.5rem;
+  }
+
+  .education-layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .experience-entry::before {
@@ -1571,6 +1992,53 @@
     gap: 0.5rem;
   }
 
+  .education-item {
+    gap: 0.45rem;
+  }
+
+  .education-list {
+    grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1fr);
+    gap: 0.8rem 0;
+  }
+
+  .education-item:nth-child(odd)::before {
+    left: calc(100% + 0.875rem);
+  }
+
+  .education-item:nth-child(even)::before {
+    left: -1.525rem;
+  }
+
+  .education-item::after {
+    width: 1.2rem;
+  }
+
+  .education-details {
+    min-height: auto;
+    padding: 0.8rem 1.25rem 0.8rem 0.65rem;
+  }
+
+  .education-item:nth-child(odd) .education-details {
+    padding-right: 0.65rem;
+    padding-left: 1.25rem;
+  }
+
+  .education-details h3 {
+    font-size: clamp(0.95rem, 3.4vw, 1.2rem);
+  }
+
+  .education-period {
+    font-size: clamp(0.95rem, 3.4vw, 1.15rem);
+  }
+
+  .education-institution {
+    font-size: 0.75rem;
+  }
+
+  .education-location {
+    font-size: 0.68rem;
+  }
+
   .experience-entry {
     grid-template-columns: 1fr;
     gap: 0.75rem;
@@ -1618,8 +2086,51 @@
     gap: 1rem;
   }
 
-  .skill-grid {
-    grid-template-columns: 1fr;
+  .skill-tree {
+    grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1fr);
+    gap: 0.8rem 0;
+  }
+
+  .skill-card:nth-child(odd)::before {
+    left: 1.4rem;
+  }
+
+  .skill-card:nth-child(odd)::after {
+    right: auto;
+    left: 0.8rem;
+  }
+
+  .skill-card:nth-child(even)::after {
+    right: 0.8rem;
+  }
+
+  .skill-branch {
+    width: 1.2rem;
+  }
+
+  .skill-card-top {
+    gap: 0.35rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .skill-index {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 0.6rem;
+  }
+
+  .skill-card h3 {
+    font-size: clamp(1.05rem, 3.6vw, 1.35rem);
+  }
+
+  .skill-tags {
+    gap: 0.35rem;
+    margin-top: 0.75rem;
+  }
+
+  .skill-tags li {
+    padding: 0.32rem 0.45rem;
+    font-size: 0.62rem;
   }
 
   .transferable-section {
@@ -1676,10 +2187,46 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .skill-tree::before {
+    animation: none;
+    transform: translateX(-50%) scaleY(1);
+  }
+
+  .skill-branch {
+    animation: none;
+    transform: scaleX(1);
+  }
+
+  .skill-card::after {
+    animation: none;
+  }
+
+  .education-list::before {
+    animation: none;
+    transform: translateX(-50%) scaleY(1);
+  }
+
+  .education-item::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+
+  .education-item::after {
+    transform: scaleX(1);
+  }
+
+  .education-details::after {
+    animation: none;
+  }
+
   .skill-card,
+  .skill-card::after,
   .skill-card-rule,
   .skill-tags li,
   .transferable-list li,
+  .profile-card,
+  .experience-highlight,
+  .language-item,
   .experience-card,
   .experience-card::before {
     transition: none;
@@ -1691,6 +2238,14 @@
   .experience-highlight:hover,
   .technology-list li:hover {
     transform: none;
+  }
+
+  .skill-card:hover::after {
+    transform: rotate(38deg);
+  }
+
+  .skill-card:nth-child(even):hover::after {
+    transform: rotate(-38deg);
   }
 
   .chat-connection span {

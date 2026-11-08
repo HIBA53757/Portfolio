@@ -12,7 +12,7 @@ The portfolio is being built in small, reviewable commits:
 4. **Introduction** — write and style the hero and profile using the CV.
 5. **Skills** — present the technical and transferable skills from the CV.
 6. **Experience** — add the Highness internship without inventing results.
-7. **Projects** — add Job Match, MediCare, and the LMS backend project.
+7. **Projects** — present Job Match, LMS Backend, E-commerce Laravel, and EasyColoc.
 8. **Education and languages** — show the three studies and five languages.
 9. **Contact** — build an accessible form with React Hook Form and Zod; connect EmailJS later.
 10. **Polish** — finish responsive layouts, accessibility, metadata, and final review.

@@ -47,6 +47,42 @@ const transferableSkills = [
   'Adaptabilité',
 ]
 
+const education = [
+  {
+    period: '2025 — 2027',
+    title: 'Développement Web Full Stack',
+    institution: 'YouCode',
+    location: 'Nador, Maroc',
+    status: 'En cours',
+  },
+  {
+    period: '2024 — 2025',
+    title: 'Informatique & Intelligence Artificielle',
+    institution: 'Université Mohammed 1',
+    location: 'Nador, Maroc',
+  },
+  {
+    period: '2023 — 2024',
+    title: 'Informatique & langue chinoise',
+    institution: 'China Jiliang University',
+    location: 'Hangzhou, Chine',
+  },
+  {
+    period: '2020 — 2023',
+    title: 'Baccalauréat Sciences Physiques · option française',
+    institution: 'Baccalauréat',
+    location: 'Nador, Maroc',
+  },
+]
+
+const languages = [
+  { name: 'Arabe', level: 'Langue maternelle' },
+  { name: 'Anglais', level: 'Avancé' },
+  { name: 'Français', level: 'Intermédiaire' },
+  { name: 'Turc', level: 'Avancé' },
+  { name: 'Chinois', level: 'Débutant' },
+]
+
 const projects = [
   {
     id: 'job-match',
@@ -238,7 +274,15 @@ function App() {
             </p>
           </div>
 
-          <aside className="profile-card" aria-label="Coordonnées de Hibatallah Sadiki">
+          <motion.aside
+            className="profile-card"
+            aria-label="Coordonnées de Hibatallah Sadiki"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -5 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
             <div className="profile-card-heading">
               <div className="profile-monogram" aria-hidden="true">HS</div>
               <div>
@@ -268,7 +312,7 @@ function App() {
               </li>
             </ul>
             <p className="profile-searching">À la recherche d’une opportunité professionnelle</p>
-          </aside>
+          </motion.aside>
         </motion.section>
 
         <section className="content-section skills-section" id="skills">
@@ -276,24 +320,26 @@ function App() {
             <div>
               <p className="eyebrow">Compétences</p>
               <h2>
-                Mon terrain de jeu <span className="skills-title-accent">technique</span>
+                Mon arbre de <span className="skills-title-accent">compétences</span>
               </h2>
             </div>
             <p className="section-note">
-              Les technologies et méthodes que j’utilise pendant ma formation et dans mes projets.
+              Chaque branche rassemble les outils et savoir-faire que je développe au fil de mes projets.
             </p>
           </div>
 
-          <div className="skill-grid">
+          <div className="skill-tree">
             {skillGroups.map((group, index) => (
               <motion.article
                 className="skill-card"
                 key={group.title}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -22 : 22, scale: 0.94 }}
+                whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                whileHover={{ y: -5, rotate: index % 2 === 0 ? -1.5 : 1.5 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.36, delay: index * 0.06, ease: 'easeOut' }}
               >
+                <span className="skill-branch" aria-hidden="true" />
                 <div className="skill-card-top">
                   <span className="skill-index">{String(index + 1).padStart(2, '0')}</span>
                   <span className="skill-card-rule" aria-hidden="true" />
@@ -311,8 +357,16 @@ function App() {
           <div className="transferable-section">
             <h3>Compétences transversales</h3>
             <ul className="transferable-list">
-              {transferableSkills.map((skill) => (
-                <li key={skill}>{skill}</li>
+              {transferableSkills.map((skill, index) => (
+                <motion.li
+                  key={skill}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
+                >
+                  {skill}
+                </motion.li>
               ))}
             </ul>
           </div>
@@ -365,33 +419,59 @@ function App() {
 
               <div className="experience-showcase">
                 <div className="experience-highlights">
-                  <article className="experience-highlight">
+                  <motion.article
+                    className="experience-highlight"
+                    initial={{ opacity: 0, x: -14 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    whileHover={{ y: -3 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.32, delay: 0.05, ease: 'easeOut' }}
+                  >
                     <span className="highlight-number">01</span>
                     <div>
                       <h4>Développement full stack</h4>
                       <p>Contribution au frontend, au backend, aux interfaces et à la gestion des données.</p>
                     </div>
-                  </article>
-                  <article className="experience-highlight">
+                  </motion.article>
+                  <motion.article
+                    className="experience-highlight"
+                    initial={{ opacity: 0, x: -14 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    whileHover={{ y: -3 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.32, delay: 0.12, ease: 'easeOut' }}
+                  >
                     <span className="highlight-number">02</span>
                     <div>
                       <h4>Chat en temps réel</h4>
                       <p>Mise en place de la communication avec WebSockets et Laravel Reverb.</p>
                     </div>
-                  </article>
-                  <article className="experience-highlight">
+                  </motion.article>
+                  <motion.article
+                    className="experience-highlight"
+                    initial={{ opacity: 0, x: -14 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    whileHover={{ y: -3 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.32, delay: 0.19, ease: 'easeOut' }}
+                  >
                     <span className="highlight-number">03</span>
                     <div>
                       <h4>Travail d’équipe</h4>
                       <p>Approche Agile et suivi du code source avec Git.</p>
                     </div>
-                  </article>
+                  </motion.article>
                 </div>
 
-                <div
+                <motion.div
                   className="realtime-visual"
                   role="img"
                   aria-label="Illustration conceptuelle d’un échange en temps réel entre un visiteur et un agent"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
                 >
                   <p className="visual-kicker">Illustration conceptuelle · Live chat</p>
                   <div className="chat-participants">
@@ -418,7 +498,7 @@ function App() {
                   <div className="visual-tech-label">
                     <span className="live-dot" /> WebSockets · Laravel Reverb
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               <div className="experience-divider" />
@@ -455,6 +535,7 @@ function App() {
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
+                whileHover={{ y: -3 }}
                 transition={{ duration: 0.36, delay: index * 0.07, ease: 'easeOut' }}
               >
                 <div
@@ -557,7 +638,74 @@ function App() {
           </div>
         </section>
 
-        {sections.filter((section) => !['about', 'skills', 'experience', 'projects'].includes(section.id)).map((section) => (
+        <section className="content-section education-section" id="education">
+          <div className="projects-heading">
+            <div>
+              <p className="eyebrow">Études & parcours</p>
+              <h2>Formation</h2>
+            </div>
+            <p className="section-note">
+              Un parcours entre développement web, informatique et découverte de nouvelles langues.
+            </p>
+          </div>
+
+          <div className="education-layout">
+            <div className="education-list" aria-label="Parcours de formation">
+              {education.map((item, index) => (
+                <motion.article
+                  className="education-item"
+                  key={item.institution}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -18 : 18, scale: 0.96 }}
+                  whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                  whileHover={{ y: -4 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
+                >
+                  <p className="education-period">{item.period}</p>
+                  <div className="education-details">
+                    <div className="education-title-row">
+                      <h3>{item.title}</h3>
+                      {item.status && <span className="education-status">{item.status}</span>}
+                    </div>
+                    <p className="education-institution">{item.institution}</p>
+                    <p className="education-location">{item.location}</p>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+
+            <motion.aside
+              className="language-panel"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -5 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              aria-labelledby="languages-title"
+            >
+              <p className="eyebrow">Communication</p>
+              <h3 id="languages-title">Langues</h3>
+              <ul className="language-list">
+                {languages.map((language, index) => (
+                  <motion.li
+                    className="language-item"
+                    key={language.name}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={{ x: 4 }}
+                    viewport={{ once: true, amount: 0.6 }}
+                    transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
+                  >
+                    <span>{language.name}</span>
+                    <span className="language-level">{language.level}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.aside>
+          </div>
+        </section>
+
+        {sections.filter((section) => !['about', 'skills', 'experience', 'projects', 'education'].includes(section.id)).map((section) => (
           <section className="content-section" id={section.id} key={section.id}>
             <p className="eyebrow">{section.label}</p>
             <h2>{section.label}</h2>
