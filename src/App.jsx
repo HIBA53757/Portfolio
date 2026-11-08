@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
-import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Menu, Phone, Sparkles, X } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Menu, Phone, Send, Sparkles, X } from 'lucide-react'
 import './App.css'
 
 const sections = [
@@ -11,6 +13,20 @@ const sections = [
   { id: 'education', label: 'Formation' },
   { id: 'contact', label: 'Contact' },
 ]
+
+const contactSchema = z.object({
+  name: z.string().trim().min(2, 'Indiquez votre nom (au moins 2 caractères).').max(80, 'Le nom doit contenir moins de 80 caractères.'),
+  email: z.string().trim().email('Entrez une adresse e-mail valide.').max(200, 'L’adresse e-mail est trop longue.'),
+  subject: z.string().trim().min(3, 'Le sujet doit contenir au moins 3 caractères.').max(120, 'Le sujet doit contenir moins de 120 caractères.'),
+  message: z.string().trim().min(20, 'Le message doit contenir au moins 20 caractères.').max(2000, 'Le message doit contenir moins de 2 000 caractères.'),
+})
+
+function validateContactField(field) {
+  return (value) => {
+    const result = contactSchema.shape[field].safeParse(value)
+    return result.success || result.error.issues[0]?.message
+  }
+}
 
 const skillGroups = [
   {
@@ -155,7 +171,16 @@ const projects = [
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [contactStatus, setContactStatus] = useState('')
   const menuToggleRef = useRef(null)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: { name: '', email: '', subject: '', message: '' },
+  })
 
   useEffect(() => {
     if (!isMenuOpen) return undefined
@@ -183,6 +208,14 @@ function App() {
 
   function closeMenu() {
     setIsMenuOpen(false)
+  }
+
+  function sendContactMessage(values) {
+    const message = contactSchema.parse(values)
+    const subject = encodeURIComponent(message.subject)
+    const body = encodeURIComponent(`Bonjour Hibatallah,\n\n${message.message}\n\n${message.name}\n${message.email}`)
+    setContactStatus('Votre application e-mail va s’ouvrir avec le message prérempli.')
+    window.location.href = `mailto:hibatallahsadiki20@gmail.com?subject=${subject}&body=${body}`
   }
 
   return (
@@ -308,6 +341,12 @@ function App() {
                 <CodeXml aria-hidden="true" />
                 <a href="https://github.com/HIBA53757" target="_blank" rel="noreferrer">
                   @HIBA53757
+                </a>
+              </li>
+              <li>
+                <span className="linkedin-mark" aria-hidden="true">in</span>
+                <a href="https://www.linkedin.com/in/hibatallah-sadiki" target="_blank" rel="noreferrer">
+                  LinkedIn · hibatallah-sadiki
                 </a>
               </li>
             </ul>
@@ -705,7 +744,140 @@ function App() {
           </div>
         </section>
 
-        {sections.filter((section) => !['about', 'skills', 'experience', 'projects', 'education'].includes(section.id)).map((section) => (
+        <section className="content-section contact-section" id="contact" aria-labelledby="contact-title">
+          <div className="contact-heading">
+            <div>
+              <p className="eyebrow">Contact</p>
+              <h2 id="contact-title">Parlons de votre prochain projet.</h2>
+            </div>
+            <p className="section-note">
+              Une opportunité, une collaboration ou une question ? Écrivez-moi.
+            </p>
+          </div>
+
+          <div className="contact-layout">
+            <motion.div
+              className="contact-info-card"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            >
+              <span className="contact-card-mark"><Mail aria-hidden="true" /></span>
+              <h3>Restons en contact</h3>
+              <p>Je suis à la recherche d’une opportunité professionnelle et ouverte aux échanges.</p>
+              <ul className="contact-list contact-details">
+                <li>
+                  <Mail aria-hidden="true" />
+                  <a href="mailto:hibatallahsadiki20@gmail.com">hibatallahsadiki20@gmail.com</a>
+                </li>
+                <li>
+                  <Phone aria-hidden="true" />
+                  <a href="tel:+212775125077">+212 775-125077</a>
+                </li>
+                <li>
+                  <MapPin aria-hidden="true" />
+                  <span>Nador · Mobilité nationale</span>
+                </li>
+                <li>
+                  <CodeXml aria-hidden="true" />
+                  <a href="https://github.com/HIBA53757" target="_blank" rel="noreferrer">GitHub · @HIBA53757</a>
+                </li>
+                <li>
+                  <span className="linkedin-mark" aria-hidden="true">in</span>
+                  <a href="https://www.linkedin.com/in/hibatallah-sadiki" target="_blank" rel="noreferrer">LinkedIn · hibatallah-sadiki</a>
+                </li>
+              </ul>
+            </motion.div>
+
+            <motion.form
+              className="contact-form-card"
+              noValidate
+              onSubmit={handleSubmit(sendContactMessage)}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.08, ease: 'easeOut' }}
+              aria-label="Formulaire de contact"
+            >
+              <div className="contact-form-heading">
+                <h3>Envoyer un message</h3>
+                <span>Les champs * sont obligatoires</span>
+              </div>
+
+              <div className="contact-form-row">
+                <div className="form-field">
+                  <label htmlFor="contact-name">Votre nom *</label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    placeholder="Votre nom"
+                    aria-invalid={Boolean(errors.name)}
+                    aria-describedby={errors.name ? 'contact-name-error' : undefined}
+                    {...register('name', { validate: validateContactField('name') })}
+                  />
+                  {errors.name && <span className="form-error" id="contact-name-error">{errors.name.message}</span>}
+                </div>
+                <div className="form-field">
+                  <label htmlFor="contact-email">Votre e-mail *</label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    placeholder="nom@exemple.com"
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? 'contact-email-error' : undefined}
+                    {...register('email', { validate: validateContactField('email') })}
+                  />
+                  {errors.email && <span className="form-error" id="contact-email-error">{errors.email.message}</span>}
+                </div>
+              </div>
+
+              <div className="form-field">
+                <label htmlFor="contact-subject">Sujet *</label>
+                <input
+                  id="contact-subject"
+                  type="text"
+                  required
+                  placeholder="Objet de votre message"
+                  aria-invalid={Boolean(errors.subject)}
+                  aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
+                  {...register('subject', { validate: validateContactField('subject') })}
+                />
+                {errors.subject && <span className="form-error" id="contact-subject-error">{errors.subject.message}</span>}
+              </div>
+
+              <div className="form-field">
+                <label htmlFor="contact-message">Message *</label>
+                <textarea
+                  id="contact-message"
+                  rows="5"
+                  required
+                  placeholder="Dites-moi quelques mots sur votre demande…"
+                  aria-invalid={Boolean(errors.message)}
+                  aria-describedby={errors.message ? 'contact-message-error' : undefined}
+                  {...register('message', { validate: validateContactField('message') })}
+                />
+                {errors.message && <span className="form-error" id="contact-message-error">{errors.message.message}</span>}
+              </div>
+
+              <button className="contact-submit" type="submit" disabled={isSubmitting}>
+                Continuer dans mon e-mail <Send aria-hidden="true" />
+              </button>
+              <p className="contact-form-note">
+                Le formulaire ouvre votre messagerie avec un brouillon prérempli ; aucun message n’est envoyé automatiquement.
+              </p>
+              <p className="contact-status" role="status" aria-live="polite">{contactStatus}</p>
+            </motion.form>
+          </div>
+        </section>
+
+        {sections.filter((section) => !['about', 'skills', 'experience', 'projects', 'education', 'contact'].includes(section.id)).map((section) => (
           <section className="content-section" id={section.id} key={section.id}>
             <p className="eyebrow">{section.label}</p>
             <h2>{section.label}</h2>
@@ -714,7 +886,43 @@ function App() {
         ))}
       </main>
 
-      <footer className="site-footer">Hibatallah Sadiki · Développeuse Web Full Stack</footer>
+      <footer className="site-footer">
+        <div className="footer-main">
+          <div className="footer-brand">
+            <a className="footer-wordmark" href="#top" aria-label="Retour à l’accueil">
+              <span className="wordmark-mark">HS</span> Hibatallah Sadiki
+            </a>
+            <p>Développeuse Web Full Stack, je conçois des applications utiles et accessibles, du frontend au backend.</p>
+            <div className="footer-links" aria-label="Réseaux et contact">
+              <a href="https://github.com/HIBA53757" target="_blank" rel="noreferrer"><CodeXml aria-hidden="true" /> GitHub</a>
+              <a href="https://www.linkedin.com/in/hibatallah-sadiki" target="_blank" rel="noreferrer"><span className="linkedin-mark" aria-hidden="true">in</span> LinkedIn</a>
+              <a href="mailto:hibatallahsadiki20@gmail.com"><Mail aria-hidden="true" /> E-mail</a>
+            </div>
+          </div>
+
+          <nav className="footer-navigation" aria-label="Navigation du pied de page">
+            <h2>Navigation</h2>
+            <div className="footer-navigation-links">
+              {sections.map((section) => (
+                <a key={section.id} href={`#${section.id}`}>{section.label}</a>
+              ))}
+            </div>
+          </nav>
+
+          <div className="footer-contact">
+            <h2>Me contacter</h2>
+            <p>Nador, Maroc · Mobilité nationale</p>
+            <a href="mailto:hibatallahsadiki20@gmail.com">hibatallahsadiki20@gmail.com</a>
+            <a href="tel:+212775125077">+212 775-125077</a>
+            <a className="footer-top-link" href="#top">Retour en haut <ArrowUpRight aria-hidden="true" /></a>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <span>© 2026 Hibatallah Sadiki</span>
+          <span>Développeuse Web Full Stack · Nador, Maroc</span>
+        </div>
+      </footer>
     </div>
     </MotionConfig>
   )
