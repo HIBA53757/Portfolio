@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { MotionConfig, motion } from 'motion/react'
+import emailjs from '@emailjs/browser'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Moon, Phone, Send, Sparkles, Sun } from 'lucide-react'
@@ -22,6 +23,12 @@ const contactSchema = z.object({
   subject: z.string().trim().min(3, 'Le sujet doit contenir au moins 3 caractères.').max(120, 'Le sujet doit contenir moins de 120 caractères.'),
   message: z.string().trim().min(20, 'Le message doit contenir au moins 20 caractères.').max(2000, 'Le message doit contenir moins de 2 000 caractères.'),
 })
+
+const emailJsConfig = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+}
 
 function validateContactField(field) {
   return (value) => {
@@ -177,6 +184,7 @@ function App() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: 'onBlur',
@@ -188,12 +196,33 @@ function App() {
     window.localStorage.setItem('portfolio-theme', theme)
   }, [theme])
 
-  function sendContactMessage(values) {
+  async function sendContactMessage(values) {
     const message = contactSchema.parse(values)
-    const subject = encodeURIComponent(message.subject)
-    const body = encodeURIComponent(`Bonjour Hibatallah,\n\n${message.message}\n\n${message.name}\n${message.email}`)
-    setContactStatus('Votre application e-mail va s’ouvrir avec le message prérempli.')
-    window.location.href = `mailto:hibatallahsadiki20@gmail.com?subject=${subject}&body=${body}`
+
+    if (!emailJsConfig.serviceId || !emailJsConfig.templateId || !emailJsConfig.publicKey) {
+      setContactStatus('Le formulaire d’envoi n’est pas encore configuré. Écrivez-moi directement à hibatallahsadiki20@gmail.com.')
+      return
+    }
+
+    setContactStatus('Envoi de votre message…')
+
+    try {
+      await emailjs.send(
+        emailJsConfig.serviceId,
+        emailJsConfig.templateId,
+        {
+          from_name: message.name,
+          reply_to: message.email,
+          subject: message.subject,
+          message: message.message,
+        },
+        { publicKey: emailJsConfig.publicKey },
+      )
+      setContactStatus('Votre message a bien été envoyé. Merci pour votre message !')
+      reset()
+    } catch {
+      setContactStatus('L’envoi a échoué. Réessayez ou écrivez-moi directement à hibatallahsadiki20@gmail.com.')
+    }
   }
 
   return (
@@ -830,10 +859,10 @@ function App() {
               </div>
 
               <button className="contact-submit" type="submit" disabled={isSubmitting}>
-                Continuer dans mon e-mail <Send aria-hidden="true" />
+                {isSubmitting ? 'Envoi en cours…' : 'Envoyer le message'} <Send aria-hidden="true" />
               </button>
               <p className="contact-form-note">
-                Le formulaire ouvre votre messagerie avec un brouillon prérempli ; aucun message n’est envoyé automatiquement.
+                Votre message sera transmis directement à mon adresse e-mail.
               </p>
               <p className="contact-status" role="status" aria-live="polite">{contactStatus}</p>
             </motion.form>
