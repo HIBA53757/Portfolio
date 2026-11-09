@@ -119,6 +119,10 @@
   display: none;
 }
 
+.mobile-dock {
+  display: none;
+}
+
 .intro {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
@@ -2735,6 +2739,311 @@
 
   .desktop-nav a {
     font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .portfolio-shell {
+    width: min(100% - 1.1rem, 74rem);
+    padding-bottom: 5.2rem;
+  }
+
+  .site-header {
+    top: 0.4rem;
+    min-height: 3.5rem;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+    padding: 0.4rem 0.55rem 0.4rem 0.7rem;
+  }
+
+  .wordmark {
+    min-width: 0;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+  }
+
+  .wordmark-mark {
+    width: 1.75rem;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .theme-toggle {
+    width: 2.3rem;
+    height: 2.3rem;
+  }
+
+  .mobile-dock {
+    position: fixed;
+    z-index: 30;
+    right: 0.45rem;
+    bottom: max(0.45rem, env(safe-area-inset-bottom));
+    left: 0.45rem;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    width: min(100% - 0.9rem, 29rem);
+    margin-inline: auto;
+    padding: 0.35rem 0.2rem;
+    border: 1px solid var(--line);
+    border-radius: 1.15rem;
+    background: color-mix(in srgb, var(--cream) 92%, transparent);
+    box-shadow: 0 0.5rem 1.8rem rgb(51 32 74 / 16%);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-dock a {
+    display: grid;
+    min-width: 0;
+    justify-items: center;
+    align-content: center;
+    gap: 0.15rem;
+    padding: 0.35rem 0.05rem;
+    border-radius: 0.75rem;
+    color: var(--muted);
+    font-size: clamp(0.46rem, 2vw, 0.58rem);
+    line-height: 1.1;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .mobile-dock a:hover,
+  .mobile-dock a:focus-visible {
+    color: var(--primary);
+    background: color-mix(in srgb, var(--beige) 70%, transparent);
+  }
+
+  .mobile-dock svg {
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  .intro {
+    gap: 1.5rem;
+    padding-block: 2.3rem 2rem;
+    text-align: center;
+  }
+
+  .intro h1 {
+    margin-inline: auto;
+    font-size: clamp(3rem, 13vw, 4.8rem);
+  }
+
+  .intro-copy > .eyebrow {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-actions {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .hero-actions .hero-button {
+    width: min(100%, 19rem);
+    justify-content: center;
+  }
+
+  .mobility-note {
+    justify-content: center;
+  }
+
+  .profile-card {
+    width: min(100%, 28rem);
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  .content-section,
+  .skills-section,
+  .experience-section,
+  .projects-section,
+  .education-section {
+    padding-block: 2.8rem;
+    scroll-margin-top: 4.5rem;
+  }
+
+  .project-visual {
+    min-height: 15rem;
+  }
+
+  .project-copy h3 {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .contact-section {
+    padding: 2rem 0.85rem;
+  }
+
+  .contact-heading {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-heading h2 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .contact-heading .section-note {
+    text-align: center;
+  }
+}
+
+@media (max-width: 390px) {
+  .portfolio-shell {
+    width: min(100% - 0.8rem, 74rem);
+  }
+
+  .skill-tree {
+    grid-template-columns: minmax(0, 1fr) 1.9rem minmax(0, 1fr);
+  }
+
+  .skill-card {
+    padding: 0.7rem 0.5rem;
+  }
+
+  .skill-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .skill-tags li {
+    padding: 0.28rem 0.38rem;
+    font-size: 0.56rem;
+  }
+
+  .skill-branch {
+    width: 0.95rem;
+  }
+
+  .education-list {
+    grid-template-columns: minmax(0, 1fr) 1.9rem minmax(0, 1fr);
+  }
+
+  .education-item:nth-child(odd)::before {
+    left: calc(100% + 0.625rem);
+  }
+
+  .education-item:nth-child(even)::before {
+    left: -1.275rem;
+  }
+
+  .education-item::after {
+    width: 0.95rem;
+  }
+
+  .education-details h3 {
+    font-size: 0.9rem;
+  }
+
+  .education-period {
+    font-size: 0.88rem;
+  }
+
+  .mobile-dock a {
+    font-size: 0.44rem;
+  }
+}
+
+:root[data-theme='dark'] .mobile-dock {
+  background: rgb(31 24 40 / 94%);
+  box-shadow: 0 0.5rem 1.8rem rgb(0 0 0 / 36%);
+}
+
+/* Final mobile overrides keep the compact layout after section-specific styles. */
+@media (max-width: 760px) {
+  .site-header {
+    flex-wrap: nowrap;
+    min-height: 3.5rem;
+    padding-block: 0.4rem;
+  }
+
+  .intro {
+    gap: 1.5rem;
+    padding-block: 2.3rem 2rem;
+    text-align: center;
+  }
+
+  .intro h1 {
+    margin-inline: auto;
+    font-size: clamp(3rem, 13vw, 4.8rem);
+  }
+
+  .hero-actions {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .hero-actions .hero-button {
+    width: min(100%, 19rem);
+    justify-content: center;
+  }
+
+  .mobility-note {
+    justify-content: center;
+  }
+
+  .project-visual {
+    min-height: 15rem;
+  }
+
+  .project-copy h3 {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .contact-section {
+    padding: 2rem 0.85rem;
+  }
+
+  .contact-heading {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-heading h2 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .contact-heading .section-note {
+    text-align: center;
+  }
+}
+
+@media (max-width: 390px) {
+  .skill-tree,
+  .education-list {
+    grid-template-columns: minmax(0, 1fr) 1.9rem minmax(0, 1fr);
+  }
+
+  .skill-card {
+    padding: 0.7rem 0.5rem;
+  }
+
+  .skill-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .skill-tags li {
+    padding: 0.28rem 0.38rem;
+    font-size: 0.56rem;
+  }
+
+  .skill-branch,
+  .education-item::after {
+    width: 0.95rem;
+  }
+
+  .education-details h3 {
+    font-size: 0.9rem;
+  }
+
+  .education-period {
+    font-size: 0.88rem;
+  }
+
+  .mobile-dock a {
+    font-size: 0.44rem;
   }
 }
 

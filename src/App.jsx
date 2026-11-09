@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, MotionConfig, motion } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { MotionConfig, motion } from 'motion/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Menu, Moon, Phone, Send, Sparkles, Sun, X } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Moon, Phone, Send, Sparkles, Sun } from 'lucide-react'
 import './App.css'
 
 const sections = [
@@ -13,6 +13,8 @@ const sections = [
   { id: 'education', label: 'Formation' },
   { id: 'contact', label: 'Contact' },
 ]
+
+const mobileNavIcons = [Sparkles, CodeXml, Phone, ArrowDownRight, MapPin, Mail]
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, 'Indiquez votre nom (au moins 2 caractères).').max(80, 'Le nom doit contenir moins de 80 caractères.'),
@@ -170,10 +172,8 @@ const projects = [
 ]
 
 function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [theme, setTheme] = useState(() => window.localStorage.getItem('portfolio-theme') || 'light')
   const [contactStatus, setContactStatus] = useState('')
-  const menuToggleRef = useRef(null)
   const {
     register,
     handleSubmit,
@@ -188,34 +188,6 @@ function App() {
     window.localStorage.setItem('portfolio-theme', theme)
   }, [theme])
 
-  useEffect(() => {
-    if (!isMenuOpen) return undefined
-
-    function closeOnEscape(event) {
-      if (event.key === 'Escape') {
-        setIsMenuOpen(false)
-        menuToggleRef.current?.focus()
-      }
-    }
-
-    window.addEventListener('keydown', closeOnEscape)
-    return () => window.removeEventListener('keydown', closeOnEscape)
-  }, [isMenuOpen])
-
-  useEffect(() => {
-    const desktopQuery = window.matchMedia('(min-width: 761px)')
-    const closeOnDesktop = (event) => {
-      if (event.matches) setIsMenuOpen(false)
-    }
-
-    desktopQuery.addEventListener('change', closeOnDesktop)
-    return () => desktopQuery.removeEventListener('change', closeOnDesktop)
-  }, [])
-
-  function closeMenu() {
-    setIsMenuOpen(false)
-  }
-
   function sendContactMessage(values) {
     const message = contactSchema.parse(values)
     const subject = encodeURIComponent(message.subject)
@@ -228,14 +200,14 @@ function App() {
     <MotionConfig reducedMotion="user">
     <div className="portfolio-shell">
       <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Accueil — Hibatallah Sadiki" onClick={closeMenu}>
+        <a className="wordmark" href="#top" aria-label="Accueil — Hibatallah Sadiki">
           <span className="wordmark-mark">HS</span>
           <span>Hibatallah Sadiki</span>
         </a>
 
         <nav className="desktop-nav" aria-label="Navigation principale">
           {sections.map((section) => (
-            <a key={section.id} href={`#${section.id}`} onClick={closeMenu}>
+            <a key={section.id} href={`#${section.id}`}>
               {section.label}
             </a>
           ))}
@@ -251,44 +223,19 @@ function App() {
           {theme === 'light' ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
         </button>
 
-        <button
-          ref={menuToggleRef}
-          className="menu-toggle"
-          type="button"
-          aria-label={isMenuOpen ? 'Fermer le menu de navigation' : 'Ouvrir le menu de navigation'}
-          aria-expanded={isMenuOpen}
-          aria-controls="mobile-navigation"
-          onClick={() => setIsMenuOpen((open) => !open)}
-        >
-          {isMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
-        </button>
-
-        <div
-          className="mobile-nav-slot"
-          id="mobile-navigation"
-          aria-hidden={!isMenuOpen}
-          inert={!isMenuOpen}
-        >
-          <AnimatePresence initial={false}>
-            {isMenuOpen && (
-              <motion.nav
-                className="mobile-nav"
-                aria-label="Navigation mobile"
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8, pointerEvents: 'none' }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
-              >
-                {sections.map((section) => (
-                  <a key={section.id} href={`#${section.id}`} onClick={closeMenu}>
-                    {section.label}
-                  </a>
-                ))}
-              </motion.nav>
-            )}
-          </AnimatePresence>
-        </div>
       </header>
+
+      <nav className="mobile-dock" aria-label="Navigation mobile">
+        {sections.map((section, index) => {
+          const Icon = mobileNavIcons[index]
+          return (
+            <a key={section.id} href={`#${section.id}`}>
+              <Icon aria-hidden="true" />
+              <span>{section.label}</span>
+            </a>
+          )
+        })}
+      </nav>
 
       <main id="top">
         <motion.section
