@@ -3,7 +3,7 @@ import { MotionConfig, motion } from 'motion/react'
 import emailjs from '@emailjs/browser'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { ArrowDownRight, ArrowUpRight, CodeXml, Mail, MapPin, Moon, Phone, Send, Sparkles, Sun } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, CodeXml, FileText, Mail, MapPin, Moon, Phone, Send, Sparkles, Sun } from 'lucide-react'
 import './App.css'
 
 const sections = [
@@ -290,8 +290,16 @@ function App() {
               <a className="hero-button hero-button-primary" href="#projects">
                 Voir mes projets <ArrowDownRight aria-hidden="true" />
               </a>
-              <a className="hero-button hero-button-secondary" href="mailto:hibatallahsadiki20@gmail.com">
+              <a className="hero-button hero-button-secondary" href="#contact">
                 Me contacter <ArrowUpRight aria-hidden="true" />
+              </a>
+              <a
+                className="hero-button hero-button-secondary"
+                href={`${import.meta.env.BASE_URL}cv-hibatallah-sadiki.pdf`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Voir mon CV <FileText aria-hidden="true" />
               </a>
             </div>
             <p className="mobility-note">
